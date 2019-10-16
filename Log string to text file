@@ -1,0 +1,44 @@
+##Powershell Project:
+ 
+##Summary: Function that takes in a string and logs it to a text file.
+ 
+##Pre-set Variables: Log file name, Log file max size, log file location
+ 
+##So basically write a function that will take a string as input then use the 3 variables mentioned above that are hard coded in to write that string as a new line in the text file. 
+##Start the line with the datetime like "[10/3/2019 10:11:00] - $stringInput"
+ 
+##When the log file reaches the max size then it will rename the current one to some other name like $logfilename1 etc, then start a new file with the specified name in the pre set variable. 
+
+Function WriteLog($LogText){
+    $MaxFileSize = 2gb
+    $logname = "LogFile"
+    $LogLocation = "E:\TestFolder\"
+    $Date = Get-Date -UFormat %Y-%m-%d--%H.%M.%S
+    
+    #tests file location
+    if (Test-path -Path "$loglocation latest_ $logname.txt") {
+        #file exists, check size
+        if ((Get-Item -Path "$loglocation latest_ $logname.txt").Length -lt $MaxFileSize){ 
+            #file is smaller than max size
+            Add-Content -Path "$loglocation latest_ $logname.txt" -Value "`n$Date-- $logtext"
+            Write-Host "File already exists and new content added"
+        }else{
+            #file is over max size
+            Rename-Item -Path "$loglocation latest_ $logname.txt" -newname old_$logname-"$date".txt
+            New-Item -Path "$logLocation latest_ $logname.txt" -Value "$Date-- $logtext"
+        }
+    }else{
+        #file does not exist
+        #create file
+        New-Item  -Path "$loglocation latest_ $logname.txt" -Value $logtext
+                
+    }
+}
+
+##bunches of bullshit comments, ignore them all.
+
+##If the file size is too big
+
+        #$maxSize = if((Get-Item $logname).Length -gt 5kb) {$true}else{$false}
+
+##Write text to either the old or newly created one
